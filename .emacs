@@ -73,6 +73,12 @@
 
 
 ;;----------------------------------------------------------------------
+;; git
+;;----------------------------------------------------------------------
+(add-to-list 'load-path "/usr/share/git-core/emacs")
+(require 'git)
+
+;;----------------------------------------------------------------------
 ;; Fill Column Indicator
 ;;----------------------------------------------------------------------
 (require 'fill-column-indicator)
@@ -133,6 +139,9 @@
 ;; Window scrolling
 (global-set-key "\M-n"  (lambda () (interactive) (scroll-up   1)) )
 (global-set-key "\M-p"  (lambda () (interactive) (scroll-down 1)) )
+
+(add-to-list 'load-path "~/.emacs.d/local")
+(add-hook 'LaTeX-mode-hook (lambda () (load "latex-functions")))
 
 ;;----------------------------------------------------------------------
 ;; Aliases
