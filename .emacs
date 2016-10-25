@@ -15,17 +15,36 @@
  ;; If there is more than one, they won't work right.
  )
 
+;; List of all packages I want installed
+(setq package-list '(el-get popup auto-complete fill-column-indicator
+		     ctable dash request websocket markdown-mode
+		     python-mode pydoc python-environment pyvenv
+		     virtualenvwrapper
+		     epc s jedi ein))
+
 ;;----------------------------------------------------------------------
 ;; ELPA
 ;;----------------------------------------------------------------------
 (require 'package)
-(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")))
-;(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
-(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+
+;; Add all subdirectories of ~/.emacs.d/elpa to load-path
+(let ((default-directory  "~/.emacs.d/elpa/"))
+  (normal-top-level-add-subdirs-to-load-path))
+
 (package-initialize)
 
-(require 'popup)
+; fetch the list of packages available 
+(unless package-archive-contents
+  (package-refresh-contents))
 
+; Install any package from package-list that isn't installed
+(dolist (package package-list)
+  (unless (package-installed-p package)
+    (package-install package)))
+
+(require 'popup)
 
 ;;----------------------------------------------------------------------
 ;; Interactively Do Things
@@ -33,66 +52,16 @@
 (require 'ido)
 (ido-mode t)
 
-;;
-;; linum
-;;
 (global-linum-mode 1)
-
-(require 'ein)
-
-;;----------------------------------------------------------------------
-;; el-get
-;;----------------------------------------------------------------------
-;
-;(add-to-list 'load-path "~/.emacs.d/el-get/el-get")
-;
-;(unless (require 'el-get nil 'noerror)
-;  (with-current-buffer
-;      (url-retrieve-synchronously
-;       "https://raw.github.com/dimitri/el-get/master/el-get-install.el")
-;    (let (el-get-master-branch)
-;      (goto-char (point-max))
-;      (eval-print-last-sexp))))
-;
-;(el-get 'sync)
-
-;;----------------------------------------------------------------------
-;; jedi
-;;----------------------------------------------------------------------
-;(add-hook 'python-mode-hook 'jedi:setup)
-;(setq jedi:setup-keys t)                      ; optional
-;(setq jedi:complete-on-dot t)                 ; optional
-
-(add-to-list 'load-path "~/.emacs.d/autocomplete")
-(require 'auto-complete-config)
-(ac-config-default)
-(global-auto-complete-mode t)
-
-(add-to-list 'load-path "~/.emacs.d/jedi")
-(require 'jedi)
-
-
-;;----------------------------------------------------------------------
-;; git
-;;----------------------------------------------------------------------
-(add-to-list 'load-path "/usr/share/git-core/emacs")
-(require 'git)
-
-;;----------------------------------------------------------------------
-;; Fill Column Indicator
-;;----------------------------------------------------------------------
-(require 'fill-column-indicator)
-(define-globalized-minor-mode
-  global-fci-mode fci-mode (lambda () (fci-mode 1)))
-(global-fci-mode t)
-(setq-default fci-rule-column 78)
+(electric-indent-mode 1)
 
 ;;----------------------------------------------------------------------
 ;; Python
 ;;----------------------------------------------------------------------
-(setq py-install-directory "~/.emacs.d/python-mode")
-(add-to-list 'load-path py-install-directory)
-(require 'python-mode)
+;(setq py-install-directory "~/.emacs.d/python-mode")
+;(add-to-list 'load-path py-install-directory)
+(require 'python)
+;(require 'python-mode)
 
 ; use IPython
 (setq-default py-shell-name "ipython")
@@ -107,15 +76,54 @@
 (setq py-switch-buffers-on-execute-p t)
 (setq py-split-windows-on-execute-p t)
 ; try to automagically figure out indentation
-(setq py-smart-indentation t)
+;(setq py-smart-indentation t)
+
+;(require 'virtualenvwrapper)
+(require 'python-environment)
+(venv-initialize-interactive-shells) ;; if you want interactive shell support
+;; Used by virtualenvwrapper.el
+(setq venv-location (expand-file-name "~/.virtualenvs"))
+;; Used python-environment.el and by extend jedi.el
+(setq python-environment-directory venv-location)
+
+(require 'auto-complete)
+;(require 'auto-complete-config)
+(ac-config-default)
+(global-auto-complete-mode t)
+
+;;----------------------------------------------------------------------
+;; jedi
+;;----------------------------------------------------------------------
+(require 'jedi)
+(add-hook 'python-mode-hook 'jedi:setup)
+(setq jedi:setup-keys t)
+(setq jedi:complete-on-dot t)
+
+(require 'ein)
+(setq ein:use-auto-complete t)
+(setq ein:use-smartrep t)
+
+;;----------------------------------------------------------------------
+;; git
+;;----------------------------------------------------------------------
+;(require 'git)
+
+;;----------------------------------------------------------------------
+;; Fill Column Indicator
+;;----------------------------------------------------------------------
+(require 'fill-column-indicator)
+(define-globalized-minor-mode
+  global-fci-mode fci-mode (lambda () (fci-mode 1)))
+(global-fci-mode t)
+(setq-default fci-rule-column 78)
 
 ;;----------------------------------------------------------------------
 ;; Miscellaneous
 ;;---------------------------------------------------------------------
 ; specify the fringe width for windows -- this sets both the left and
 ; right fringes to 10
-(require 'fringe)
-(fringe-mode 10)
+;(require 'fringe)
+;(fringe-mode 10)
 
 ; lines which are exactly as wide as the window (not counting the
 ; final newline character) are not continued. Instead, when point is
@@ -140,7 +148,7 @@
 (global-set-key "\M-n"  (lambda () (interactive) (scroll-up   1)) )
 (global-set-key "\M-p"  (lambda () (interactive) (scroll-down 1)) )
 
-(add-to-list 'load-path "~/.emacs.d/local")
+;; emacs functions for GMU dissertation
 (add-hook 'LaTeX-mode-hook (lambda () (load "latex-functions")))
 
 ;;----------------------------------------------------------------------
