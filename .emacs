@@ -6,6 +6,9 @@
  '(column-number-mode t)
  '(custom-enabled-themes (quote (tango-dark)))
  '(inhibit-startup-screen t)
+ '(package-selected-packages
+   (quote
+    (ein jedi epc virtualenvwrapper pyvenv python-environment pydoc python-mode markdown-mode websocket request dash ctable fill-column-indicator auto-complete popup el-get)))
  '(show-paren-mode t)
  '(tool-bar-mode nil))
 (custom-set-faces
@@ -156,3 +159,4 @@
 ;;----------------------------------------------------------------------
 (defalias 'einls 'ein:notebooklist-open)
 
+(setq linum-format "%4d \u2502")
