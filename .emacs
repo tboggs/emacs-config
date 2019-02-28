@@ -160,3 +160,26 @@
 (defalias 'einls 'ein:notebooklist-open)
 
 (setq linum-format "%4d \u2502")
+
+(menu-bar-mode -1)
+
+;;----------------------------------------------------------------------
+;; org-mode config
+;;----------------------------------------------------------------------
+(setq org-agenda-files '("~/org"))
+
+(setq org-todo-keywords
+      '((sequence "TODO(t)" "IN-PROGRESS(i)" "BLOCKED" "|" "DONE(d)")
+        (sequence "|" "CANCELED(c)")))
+
+(global-set-key (kbd "C-c l") 'org-store-link)
+(global-set-key (kbd "C-c C-l") 'org-insert-link)
+(global-set-key (kbd "C-c a") 'org-agenda)
+(global-set-key (kbd "C-c c") 'org-capture)
+(setq org-default-notes-file "~/org/notes.org")
+
+(setq org-agenda-sorting-strategy
+    '((agenda ts-uppriority-down time-up category-keep)
+      (todo ts-up priority-down time-up category-keep)
+      (tags priority-down category-keep)
+      (search category-keep)))
