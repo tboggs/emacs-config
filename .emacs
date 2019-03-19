@@ -8,7 +8,7 @@
  '(inhibit-startup-screen t)
  '(package-selected-packages
    (quote
-    (ein jedi epc virtualenvwrapper pyvenv python-environment pydoc python-mode markdown-mode websocket request dash ctable fill-column-indicator auto-complete popup el-get)))
+    (magit ein jedi epc virtualenvwrapper pyvenv python-environment pydoc python-mode markdown-mode websocket request dash ctable fill-column-indicator auto-complete popup el-get)))
  '(show-paren-mode t)
  '(tool-bar-mode nil))
 (custom-set-faces
@@ -23,7 +23,7 @@
 		     ctable dash request websocket markdown-mode
 		     python-mode pydoc python-environment pyvenv
 		     virtualenvwrapper
-		     epc s jedi ein))
+		     epc s jedi ein magit))
 
 ;;----------------------------------------------------------------------
 ;; ELPA
@@ -180,6 +180,6 @@
 
 (setq org-agenda-sorting-strategy
     '((agenda ts-uppriority-down time-up category-keep)
-      (todo ts-up priority-down time-up category-keep)
+      (todo ts-down priority-down time-up category-keep)
       (tags priority-down category-keep)
       (search category-keep)))
