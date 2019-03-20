@@ -8,7 +8,7 @@
  '(inhibit-startup-screen t)
  '(package-selected-packages
    (quote
-    (magit ein jedi epc virtualenvwrapper pyvenv python-environment pydoc python-mode markdown-mode websocket request dash ctable fill-column-indicator auto-complete popup el-get)))
+    (doom-themes magit ein jedi epc virtualenvwrapper pyvenv python-environment pydoc python-mode markdown-mode websocket request dash ctable fill-column-indicator auto-complete popup el-get)))
  '(show-paren-mode t)
  '(tool-bar-mode nil))
 (custom-set-faces
@@ -23,7 +23,7 @@
 		     ctable dash request websocket markdown-mode
 		     python-mode pydoc python-environment pyvenv
 		     virtualenvwrapper
-		     epc s jedi ein magit))
+		     epc s jedi ein magit doom-themes))
 
 ;;----------------------------------------------------------------------
 ;; ELPA
@@ -183,3 +183,32 @@
       (todo ts-down priority-down time-up category-keep)
       (tags priority-down category-keep)
       (search category-keep)))
+
+;;----------------------------------------------------------------------
+;; magit
+;;----------------------------------------------------------------------
+(global-set-key (kbd "C-c g") 'magit-status)
+
+;;----------------------------------------------------------------------
+;; Theme
+;;----------------------------------------------------------------------
+(require 'doom-themes)
+
+;; Global settings (defaults)
+(setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+      doom-themes-enable-italic t) ; if nil, italics is universally disabled
+
+;; Load the theme (doom-one, doom-molokai, etc); keep in mind that each theme
+;; may have their own settings.
+(load-theme 'doom-one t)
+
+;; Enable flashing mode-line on errors
+(doom-themes-visual-bell-config)
+
+;; Enable custom neotree theme (all-the-icons must be installed!)
+(doom-themes-neotree-config)
+;; or for treemacs users
+(doom-themes-treemacs-config)
+
+;; Corrects (and improves) org-mode's native fontification.
+(doom-themes-org-config)
