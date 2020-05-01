@@ -184,6 +184,14 @@
       (tags priority-down category-keep)
       (search category-keep)))
 
+(setq org-capture-templates
+      '(("t" "Todo" entry (file+headline "~/org/gtd.org" "Tasks")
+         "* TODO %?\n  %i\n  %a")
+	("j" "Journal" entry (file+datetree "~/org/journal.org")
+	 "* %<%R: >%? %^g\n%t")))
+(define-key global-map (kbd "C-c j")
+  (lambda () (interactive) (org-capture nil "j")))
+
 ;;----------------------------------------------------------------------
 ;; magit
 ;;----------------------------------------------------------------------
