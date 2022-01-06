@@ -185,9 +185,9 @@
       (search category-keep)))
 
 (setq org-capture-templates
-      '(("t" "Todo" entry (file+headline "~/org/gtd.org" "Tasks")
-         "* TODO %?\n  %i\n  %a")
-	("j" "Journal" entry (file+datetree "~/org/journal.org")
+      '(("t" "Todo" entry  (file"~/org/tasks.org")
+         "* TODO %? %t\n" :prepend t)
+	("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
 	 "* %<%R: >%? %^g\n%t")))
 (define-key global-map (kbd "C-c j")
   (lambda () (interactive) (org-capture nil "j")))
