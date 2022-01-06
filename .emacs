@@ -191,6 +191,8 @@
 	 "* %<%R: >%? %^g\n%t")))
 (define-key global-map (kbd "C-c j")
   (lambda () (interactive) (org-capture nil "j")))
+(define-key global-map (kbd "C-c t")
+  (lambda () (interactive) (org-capture nil "t")))
 
 ;;----------------------------------------------------------------------
 ;; magit
