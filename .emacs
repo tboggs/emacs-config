@@ -23,14 +23,15 @@
 		     ctable dash request websocket markdown-mode
 		     python-mode pydoc python-environment pyvenv
 		     virtualenvwrapper
-		     epc s jedi ein magit doom-themes))
+		     epc s jedi ein magit doom-themes
+		     f s use-package emacsql emacsql-sqlite magit-section org org-roam
+		     ))
 
 ;;----------------------------------------------------------------------
 ;; ELPA
 ;;----------------------------------------------------------------------
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 
 ;; Add all subdirectories of ~/.emacs.d/elpa to load-path
 (let ((default-directory  "~/.emacs.d/elpa/"))
@@ -193,6 +194,13 @@
   (lambda () (interactive) (org-capture nil "j")))
 (define-key global-map (kbd "C-c t")
   (lambda () (interactive) (org-capture nil "t")))
+
+;;----------------------------------------------------------------------
+;; org-roam
+;;----------------------------------------------------------------------
+(setq roam-home (expand-file-name "~/org-roam"))
+(load (expand-file-name "~/.emacs.d/roam-init"))
+(org-roam-db-autosync-mode)
 
 ;;----------------------------------------------------------------------
 ;; magit
