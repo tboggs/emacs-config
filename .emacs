@@ -201,6 +201,8 @@
 (setq roam-home (expand-file-name "~/org-roam"))
 (load (expand-file-name "~/.emacs.d/roam-init"))
 (org-roam-db-autosync-mode)
+(setq org-roam-graph-viewer "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome")
+(require 'org-roam-protocol)
 
 ;;----------------------------------------------------------------------
 ;; magit

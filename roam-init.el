@@ -10,9 +10,14 @@
        "%?"
        :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
        :unnarrowed t)
-    ("p" "project" plain (file "~/.emacs.d/roam-templates/project.org")
-     :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: Project")
-     :unnarrowed t))
+      ("p" "project" plain
+       (file "~/.emacs.d/roam-templates/project.org")
+       :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: project")
+       :unnarrowed t)
+      ("s" "staff" plain
+       (file "~/.emacs.d/roam-templates/staff.org")
+       :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: person staff")
+       :unnarrowed t))
     )
    :bind (("C-c n l" . org-roam-buffer-toggle)
 	  ("C-c n f" . org-roam-node-find)
