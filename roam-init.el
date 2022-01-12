@@ -14,6 +14,10 @@
        (file "~/.emacs.d/roam-templates/project.org")
        :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: project")
        :unnarrowed t)
+      ("t" "tool" plain
+       (file "~/.emacs.d/roam-templates/tool.org")
+       :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: tool")
+       :unnarrowed t)
       ("s" "staff" plain
        (file "~/.emacs.d/roam-templates/staff.org")
        :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: person staff")
