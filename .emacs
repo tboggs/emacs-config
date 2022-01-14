@@ -4,11 +4,10 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
- '(custom-enabled-themes (quote (tango-dark)))
+ '(custom-enabled-themes '(tango-dark))
  '(inhibit-startup-screen t)
  '(package-selected-packages
-   (quote
-    (doom-themes magit ein jedi epc virtualenvwrapper pyvenv python-environment pydoc python-mode markdown-mode websocket request dash ctable fill-column-indicator auto-complete popup el-get)))
+   '(doom-themes magit ein jedi epc virtualenvwrapper pyvenv python-environment pydoc python-mode markdown-mode websocket request dash ctable fill-column-indicator auto-complete popup el-get))
  '(show-paren-mode t)
  '(tool-bar-mode nil))
 (custom-set-faces
@@ -194,13 +193,14 @@
   (lambda () (interactive) (org-capture nil "j")))
 (define-key global-map (kbd "C-c t")
   (lambda () (interactive) (org-capture nil "t")))
+(setq org-startup-with-inline-images t)
 
 ;;----------------------------------------------------------------------
 ;; org-roam
 ;;----------------------------------------------------------------------
 (setq roam-home (expand-file-name "~/org-roam"))
 (load (expand-file-name "~/.emacs.d/roam-init"))
-(org-roam-db-autosync-mode)
+;(org-roam-db-autosync-mode)
 (setq org-roam-graph-viewer "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome")
 (require 'org-roam-protocol)
 
@@ -220,7 +220,7 @@
 
 ;; Load the theme (doom-one, doom-molokai, etc); keep in mind that each theme
 ;; may have their own settings.
-(load-theme 'doom-one t)
+(load-theme 'doom-dark+ t)
 
 ;; Enable flashing mode-line on errors
 (doom-themes-visual-bell-config)

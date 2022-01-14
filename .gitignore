@@ -1,4 +1,12 @@
-ac-comphist.dat
-auto-save-list
 *.elc
 *~
+.org-id-locations
+ac-comphist.dat
+auto-save-list
+bookmarks
+elpa/
+ido.last
+org-roam.db
+roam-templates/*.html
+roam-templates/*.tex
+transient/
