@@ -56,7 +56,7 @@
 (ido-mode t)
 
 (global-linum-mode 1)
-(electric-indent-mode 1)
+(electric-indent-mode nil)
 
 ;;----------------------------------------------------------------------
 ;; Python
