@@ -32,6 +32,10 @@
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 
+(when (not (file-directory-p "~/.emacs.d/elpa"))
+  (message "Creating ~/.emacs.d/elpa")
+  (make-directory "~/.emacs.d/elpa"))
+
 ;; Add all subdirectories of ~/.emacs.d/elpa to load-path
 (let ((default-directory  "~/.emacs.d/elpa/"))
   (normal-top-level-add-subdirs-to-load-path))
