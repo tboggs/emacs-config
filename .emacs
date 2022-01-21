@@ -236,3 +236,10 @@
 
 ;; Corrects (and improves) org-mode's native fontification.
 (doom-themes-org-config)
+
+;;----------------------------------------------------------------------
+;; Miscellaneous functions
+;;----------------------------------------------------------------------
+(load (expand-file-name "~/.emacs.d/my-functions"))
+
+(global-set-key "\C-c\C-i" 'my-insert-file-name)
