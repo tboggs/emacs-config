@@ -198,7 +198,8 @@
 (define-key global-map (kbd "C-c t")
   (lambda () (interactive) (org-capture nil "t")))
 (setq org-startup-with-inline-images t)
-
+(add-hook 'org-mode-hook
+	  (lambda () (electric-indent-local-mode -1)))
 ;;----------------------------------------------------------------------
 ;; org-roam
 ;;----------------------------------------------------------------------
