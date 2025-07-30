@@ -3,11 +3,13 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(browse-url-browser-function 'browse-url-default-macosx-browser)
  '(column-number-mode t)
  '(custom-enabled-themes '(tango-dark))
  '(inhibit-startup-screen t)
+ '(org-export-backends '(ascii beamer html icalendar latex md odt))
  '(package-selected-packages
-   '(doom-themes magit ein jedi epc virtualenvwrapper pyvenv python-environment pydoc python-mode markdown-mode websocket request dash ctable fill-column-indicator auto-complete popup el-get))
+   '(dired-sidebar multi-vterm vterm doom-themes magit ein jedi epc virtualenvwrapper pyvenv python-environment pydoc python-mode markdown-mode websocket request dash ctable fill-column-indicator auto-complete popup el-get))
  '(show-paren-mode t)
  '(tool-bar-mode nil))
 (custom-set-faces
@@ -20,10 +22,12 @@
 ;; List of all packages I want installed
 (setq package-list '(el-get popup auto-complete fill-column-indicator
 		     ctable dash request websocket markdown-mode
-		     python-mode pydoc python-environment pyvenv
+		     python-mode pydoc python-environment pyvenv ;elpy
 		     virtualenvwrapper
 		     epc s jedi ein magit doom-themes
 		     f s use-package emacsql emacsql-sqlite magit-section org org-roam
+		     gptel
+		     vertico savehist marginalia
 		     ))
 
 ;;----------------------------------------------------------------------
@@ -53,13 +57,7 @@
 
 (require 'popup)
 
-;;----------------------------------------------------------------------
-;; Interactively Do Things
-;;----------------------------------------------------------------------
-(require 'ido)
-(ido-mode t)
-
-(global-linum-mode 1)
+(global-display-line-numbers-mode 1)
 (electric-indent-mode nil)
 
 ;;----------------------------------------------------------------------
@@ -93,16 +91,22 @@
 ;; Used python-environment.el and by extend jedi.el
 (setq python-environment-directory venv-location)
 
-(require 'auto-complete)
-;(require 'auto-complete-config)
-(ac-config-default)
-(global-auto-complete-mode t)
+;;(require 'auto-complete)
+;;;(require 'auto-complete-config)
+;;(ac-config-default)
+;;(global-auto-complete-mode t)
 
 ;;----------------------------------------------------------------------
 ;; jedi
 ;;----------------------------------------------------------------------
+;(use-package elpy
+;  :ensure t
+;  :init
+;  (elpy-enable))
 (require 'jedi)
-(add-hook 'python-mode-hook 'jedi:setup)
+;;(add-hook 'python-mode-hook 'jedi:setup)
+;(elpy-enable)  
+;(setq elpy-rpc-backend "jedi")
 (setq jedi:setup-keys t)
 (setq jedi:complete-on-dot t)
 
@@ -180,6 +184,7 @@
 (global-set-key (kbd "C-c C-l") 'org-insert-link)
 (global-set-key (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-c c") 'org-capture)
+(setq browse-url-browser-function #'browse-url-firefox)
 (setq org-default-notes-file "~/org/notes.org")
 
 (setq org-agenda-sorting-strategy
@@ -238,9 +243,86 @@
 ;; Corrects (and improves) org-mode's native fontification.
 (doom-themes-org-config)
 
+
+;;----------------------------------------------------------------------
+;; Dired sidebar
+;;----------------------------------------------------------------------
+(use-package dired-sidebar
+  :ensure t
+  :commands (dired-sidebar-toggle-sidebar))
+
+(use-package dired-sidebar
+  :bind (("C-c C-d" . dired-sidebar-toggle-sidebar))
+  :ensure t
+  :commands (dired-sidebar-toggle-sidebar)
+  :init
+  (add-hook 'dired-sidebar-mode-hook
+            (lambda ()
+              (unless (file-remote-p default-directory)
+                (auto-revert-mode))))
+  :config
+  (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
+  (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
+
+  (setq dired-sidebar-subtree-line-prefix "__")
+  (setq dired-sidebar-theme 'vscode)
+  (setq dired-sidebar-use-term-integration t)
+  (setq dired-sidebar-use-custom-font t))
+
+(use-package vertico
+  :ensure t
+  :custom
+  ;; (vertico-scroll-margin 0) ;; Different scroll margin
+  (vertico-count 20) ;; Show more candidates
+  ;; (vertico-resize t) ;; Grow and shrink the Vertico minibuffer
+  (vertico-cycle t) ;; Enable cycling for `vertico-next/previous'
+  :init
+  (vertico-mode))
+
+;; Persist history over Emacs restarts. Vertico sorts by history position.
+(use-package savehist
+  :init
+  (savehist-mode))
+
+;; Emacs minibuffer configurations.
+(use-package emacs
+  :custom
+  ;; Enable context menu. `vertico-multiform-mode' adds a menu in the minibuffer
+  ;; to switch display modes.
+  (context-menu-mode t)
+  ;; Support opening new minibuffers from inside existing minibuffers.
+  (enable-recursive-minibuffers t)
+  ;; Hide commands in M-x which do not work in the current mode.  Vertico
+  ;; commands are hidden in normal buffers. This setting is useful beyond
+  ;; Vertico.
+  (read-extended-command-predicate #'command-completion-default-include-p)
+  ;; Do not allow the cursor in the minibuffer prompt
+  (minibuffer-prompt-properties
+   '(read-only t cursor-intangible t face minibuffer-prompt)))
+
+;; Enable rich annotations using the Marginalia package
+(use-package marginalia
+  :after vertico
+  ;; Bind `marginalia-cycle' locally in the minibuffer.  To make the binding
+  ;; available in the *Completions* buffer, add it to the
+  ;; `completion-list-mode-map'.
+  :bind (:map minibuffer-local-map
+         ("M-A" . marginalia-cycle))
+  ;; The :init section is always executed.
+  :init
+  (marginalia-mode))
+
 ;;----------------------------------------------------------------------
 ;; Miscellaneous functions
 ;;----------------------------------------------------------------------
 (load (expand-file-name "~/.emacs.d/my-functions"))
 
 (global-set-key "\C-c\C-i" 'my-insert-file-name)
+
+(setq
+ org-src-fontify-natively t
+ org-src-tab-acts-natively t)
+(setq org-latex-listings 'minted)
+(put 'dired-find-alternate-file 'disabled nil)
+
+(load (expand-file-name "~/.emacs.d/gptel-config"))
